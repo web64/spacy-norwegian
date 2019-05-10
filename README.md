@@ -7,6 +7,11 @@ git clone https://github.com/web64/spacy-norwegian.git
 cd spacy-norwegian
 ```
 
+These method was tested on Ubuntu with Spacy 2.1.3. On different systems or different versions of Spacy the steps might be slightly different.
+In case of errors, please refer to the Spacy documentation or submit an issue here on this repository.
+
+Suggestions for improvements would be greatly appreciated!
+
 # Vectors
 
 Download FastText Vectors and convert for use in Spacy
@@ -20,7 +25,7 @@ You can optionally download the vectors manually from: https://fasttext.cc/docs/
 wget -P fasttext https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.no.300.vec.gz
 
 # Create Spacy model from Bokmål vectors
-python -m spacy init-model nb fasttext/no_vectors_ft_lg --vectors-loc fasttext/cc.no.300.vec.gz
+python3 -m spacy init-model nb fasttext/no_vectors_ft_lg --vectors-loc fasttext/cc.no.300.vec.gz
 
 # Download Nynorsk vectors 
 wget -P fasttext https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.nn.300.vec.gz
