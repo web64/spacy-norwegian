@@ -1,4 +1,6 @@
-# Instructions for training Norwegian Spacy models
+# Instructions for training Norwegian models for use in Spacy
+
+NOTE: This is still a work-in-progress!
 
 ## Setup
 Start by cloning this repository
@@ -7,7 +9,7 @@ git clone https://github.com/web64/spacy-norwegian.git
 cd spacy-norwegian
 ```
 
-These method was tested on Ubuntu with Spacy 2.1.3. On different systems or different versions of Spacy the steps might be slightly different.
+This method was tested on Ubuntu with Spacy 2.1.3. On different systems or different versions of Spacy the steps might be slightly different.
 In case of errors, please refer to the Spacy documentation or submit an issue here on this repository.
 
 Suggestions for improvements would be greatly appreciated!
