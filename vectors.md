@@ -33,4 +33,10 @@ python3 -m spacy init-model nb models/nb_vectors_nowac_md --vectors-loc nowac/12
 wget -P nowac http://vectors.nlpl.eu/repository/11/100.zip
 unzip nowac/100.zip -d nowac/100/
 python3 -m spacy init-model nb models/nb_vectors_nowac_nbdigital_md --vectors-loc nowac/100/model.txt
+
+
+# Norsk Aviskorpus + NoWaC + NBDigital - fastText Skipgram
+wget -P nowac http://vectors.nlpl.eu/repository/11/81.zip
+unzip nowac/81.zip -d nowac/81/
+python3 -m spacy init-model nb models/nb_vectors_nowac_nbdigital_md --vectors-loc nowac/81/model.txt
 ```

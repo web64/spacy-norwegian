@@ -1,6 +1,6 @@
 # Training Norwegian models for Spacy
 
-The method described below was tested on Ubuntu with Spacy 2.1.3. On different systems or different versions of Spacy the steps might be slightly different.
+The method described below was tested on Ubuntu 16.04 with Spacy 2.1.3. On different systems or different versions of Spacy the steps might be slightly different.
 In case of errors, please refer to the Spacy documentation or submit an issue here on this repository.
 
 Suggestions for improvements would be greatly appreciated!
@@ -43,15 +43,16 @@ sed -i 's/name=//g' norne/ud/nob/no_bokmaal-ud-train.conllu
 python3 -m spacy convert --file-type json --morphology norne/ud/nob/no_bokmaal-ud-train.conllu json
 python3 -m spacy convert --file-type json --morphology norne/ud/nob/no_bokmaal-ud-dev.conllu json
 
-# Train Model - with FastText vectors
-python3 -m spacy train nb --version=0.0.1 --vectors=models/nb_vectors_ft_lg norne-models  json/no_bokmaal-ud-train.json json/no_bokmaal-ud-dev.json
-
-# Train Model - with NoWaC vectors
+# Train Model - with Norsk Aviskorpus/NoWaC  vectors
 python3 -m spacy train nb --version=0.0.1 --vectors=models/nb_vectors_nowac_md models/nb_ud_nowac_md  json/no_bokmaal-ud-train.json json/no_bokmaal-ud-dev.json
 ```
 
-# Train Norwegian Nynorsk NER Model
+# Train Norwegian Nynorsk Model (NER not availavble)
 ```bash
+# Download Nynorsk FastText vectors & create Spacy model
+wget -P fasttext https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.nn.300.vec.gz
+python3 -m spacy init-model nb models/nn_vectors_ft_lg --vectors-loc fasttext/cc.nn.300.vec.gz
+
 # Fix .conllu files - strip 'name=' from files: 'name=I-PER' -> 'I-PER'
 sed -i 's/SpaceAfter=No name=//g' norne/ud/nno/no_nynorsk-ud-dev.conllu
 sed -i 's/name=//g' norne/ud/nno/no_nynorsk-ud-dev.conllu
@@ -63,7 +64,7 @@ python3 -m spacy convert --file-type json --morphology norne/ud/nno/no_nynorsk-u
 python3 -m spacy convert --file-type json --morphology norne/ud/nno/no_nynorsk-ud-dev.conllu json
 
 # Train Model -
-python3 -m spacy train nb --version=0.0.1 --vectors=models/nn_vectors_nowac_md models/nb_ud_nowac_md  json/no_bokmaal-ud-train.json json/no_bokmaal-ud-dev.json
+python3 -m spacy train nb --version=0.0.1 --vectors=models/nn_vectors_ft_lg models/nb_ud_nowac_md  json/no_bokmaal-ud-train.json json/no_bokmaal-ud-dev.json
 ```
 
 
@@ -83,16 +84,18 @@ sed -i 's/name=//g' conllu/no-train.conllu
 python3 -m spacy convert --file-type json conllu/no-train.conllu json
 python3 -m spacy convert --file-type json conllu/no-dev.conllu json
 
-# Train
-# python3 -m spacy train nb --version=0.0.1 --vectors=models/nb_vectors_nowac_nbdigital_md models/no_ud_nowac-nbdigital_md json/no-train.json json/no-dev.json
+# Train Spacy model
 python3 -m spacy train nb --version=0.0.1 --vectors=models/nb_vectors_nowac_md models/no_ud_nowac_md json/no-train.json json/no-dev.json
+```
 
-# Packages
+
+# Creating packages from models
+
+```bash
 python3 -m spacy package models/no_ud_nowac_md/model-best packages --force
 cd packages/nb_unnamed-0.0.0/
 python3 setup.py sdist
 ```
-
 
 
 # See Also
