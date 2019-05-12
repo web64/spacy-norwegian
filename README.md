@@ -1,6 +1,6 @@
 # Training Norwegian models for Spacy
 
-The method described below was tested on Ubuntu 16.04 with Spacy 2.1.3. On different systems or different versions of Spacy the steps might be slightly different.
+The method described below was tested on Ubuntu 18.04 with Spacy 2.1.3. On different systems or different versions of Spacy the steps might be slightly different.
 In case of errors, please refer to the Spacy documentation or submit an issue here on this repository.
 
 Suggestions for improvements would be greatly appreciated!
@@ -88,24 +88,26 @@ python3 -m spacy convert --file-type json conllu/no-dev.conllu json
 python3 -m spacy train nb --version=0.0.1 --vectors=models/nb_vectors_nowac_md models/no_ud_nowac_md json/no-train.json json/no-dev.json
 ```
 
+```json
+"accuracy":{
+    "uas":91.7548876959,
+    "las":89.2278360343,
+    "ents_p":89.3064571233,
+    "ents_r":88.8511216859,
+    "ents_f":89.0782075311,
+    "tags_acc":97.6323222763,
+    "token_acc":100.0
+  }
+```
 
 # Creating packages from models
 
 ```bash
-python3 -m spacy package models/no_ud_nowac_md/model-best packages --force
+python3 -m spacy package --create-meta models/no_ud_nowac_md/model-best packages --force
 cd packages/cd nb_model0-0.0.1/
 python3 setup.py sdist
 ```
-In some versions of Spacy, the /packages/[MODEL]/meta.json needs to include these fields in order to run the `python setup.py sdist` command.
-```json
-{
-  "description":"",
-  "author":"",
-  "email":"",
-  "url":"",
-  "license":""
-}
-```
+
 # See Also
 
 * https://github.com/ltgoslo/norne - Norwegian Named Entities annotations on top of Norwegian Dependency Treebank
