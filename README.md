@@ -93,15 +93,23 @@ python3 -m spacy train nb --version=0.0.1 --vectors=models/nb_vectors_nowac_md m
 
 ```bash
 python3 -m spacy package models/no_ud_nowac_md/model-best packages --force
-cd packages/nb_unnamed-0.0.0/
+cd packages/cd nb_model0-0.0.1/
 python3 setup.py sdist
 ```
-
-
+In some versions of Spacy, the /packages/[MODEL]/meta.json needs to include these fields in order to run the `python setup.py sdist` command.
+```json
+{
+  "description":"",
+  "author":"",
+  "email":"",
+  "url":"",
+  "license":""
+}
+```
 # See Also
 
-* https://github.com/ltgoslo/norne
-* https://github.com/jarib/spacy-nb
+* https://github.com/ltgoslo/norne - Norwegian Named Entities annotations on top of Norwegian Dependency Treebank
+* https://github.com/jarib/spacy-nb - Scripts to build a Norwegian model for spacy 
 
 ## Spacy Resources
 * https://spacy.io/usage/vectors-similarity#converting
