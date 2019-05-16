@@ -1,12 +1,12 @@
 # Training Norwegian models for Spacy
 
-The method described below was tested on Ubuntu 18.04 with Spacy 2.1.3. On different systems or different versions of Spacy the steps might be slightly different.
+The method described below was tested on Ubuntu 18.04 with Spacy 2.1.4. On different systems or different versions of Spacy the steps might be slightly different.
 In case of errors, please refer to the Spacy documentation or submit an issue here on this repository.
 
 Suggestions for improvements would be greatly appreciated!
 
 ## Setup
-Start by cloning this repository and download the NorNE corpus.
+Start by cloning this repository and download the [NorNE](https://github.com/ltgoslo/norne) corpus.
 ```bash
 git clone https://github.com/web64/spacy-norwegian.git
 cd spacy-norwegian
@@ -48,7 +48,6 @@ python3 -m spacy convert --file-type json --morphology conllu/no_bokmaal-ud-test
 python3 -m spacy convert --file-type json --morphology conllu/no_nynorsk-ud-train.conllu json
 python3 -m spacy convert --file-type json --morphology conllu/no_nynorsk-ud-dev.conllu json
 python3 -m spacy convert --file-type json --morphology conllu/no_nynorsk-ud-test.conllu json
-
 ```
 
 # Train Norwegian Bokmål NER Model
@@ -111,6 +110,15 @@ python3 setup.py sdist
 
 # Install package
 pip3 install package-name.tar.gz
+```
+
+# Testing the model
+
+First update the path to the model: `Norwegian = spacy.load("/PATH/TO/MODEL")`
+
+Then run:
+```bash
+python3 spacy_no_test.py
 ```
 
 # See Also
