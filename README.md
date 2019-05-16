@@ -33,7 +33,7 @@ python3 -m spacy init-model nb models/nb_vectors_nowac_md --vectors-loc nowac/12
 
 # Prepare training data
 First convert .conllu files to a format parsable by Spacy.
-The 10th MISC column will be converted from `SpaceAfter=No|name=B-GPE_ORG` to only `B-GPE_ORG`.
+The 10th MISC column will be converted from `SpaceAfter=No|name=B-GPE_ORG` to only include `B-GPE_ORG`.
 ```bash
 python3 norne/scripts/ud2spacy.py nob --outputdir=conllu
 python3 norne/scripts/ud2spacy.py nno --outputdir=conllu
@@ -61,10 +61,6 @@ python3 -m spacy train nb --version=0.0.1 --vectors=models/nb_vectors_nowac_md m
 # Download Nynorsk FastText vectors & create Spacy model
 wget -P fasttext https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.nn.300.vec.gz
 python3 -m spacy init-model nb models/nn_vectors_ft_lg --vectors-loc fasttext/cc.nn.300.vec.gz
-
-# Convert .conllu files to Spacy JSON format
-python3 -m spacy convert --file-type json --morphology norne/ud/nno/no_nynorsk-ud-train.conllu json
-python3 -m spacy convert --file-type json --morphology norne/ud/nno/no_nynorsk-ud-dev.conllu json
 
 # Train Model -
 python3 -m spacy train nb --version=0.0.1 --vectors=models/nn_vectors_ft_lg models/nb_ud_nowac_md  json/no_bokmaal-ud-train.json json/no_bokmaal-ud-dev.json
