@@ -30,34 +30,38 @@ python3 -m spacy init-model nb models/nb_vectors_nowac_md --vectors-loc nowac/12
 
 [Instructions for preparing additional Norwegian vector models](https://github.com/web64/spacy-norwegian/blob/master/vectors.md)
 
-# Train Norwegian Bokmål NER Model
 
+# Prepare training data
+First convert .conllu files to a format parsable by Spacy.
+The 10th MISC column will be converted from `SpaceAfter=No|name=B-GPE_ORG` to only `B-GPE_ORG`.
 ```bash
-# Fix .conllu files - strip 'name=' from files: 'name=I-PER' -> 'I-PER'
-sed -i 's/SpaceAfter=No name=//g' norne/ud/nob/no_bokmaal-ud-dev.conllu
-sed -i 's/name=//g' norne/ud/nob/no_bokmaal-ud-dev.conllu
-sed -i 's/SpaceAfter=No name=//g' norne/ud/nob/no_bokmaal-ud-train.conllu
-sed -i 's/name=//g' norne/ud/nob/no_bokmaal-ud-train.conllu
+python3 norne/scripts/ud2spacy.py nob --outputdir=conllu
+python3 norne/scripts/ud2spacy.py nno --outputdir=conllu
+```
 
-# Convert .conllu files to Spacy JSON format
-python3 -m spacy convert --file-type json --morphology norne/ud/nob/no_bokmaal-ud-train.conllu json
-python3 -m spacy convert --file-type json --morphology norne/ud/nob/no_bokmaal-ud-dev.conllu json
+Convert .conllu files to  Spacy's JSON format
+```bash
+python3 -m spacy convert --file-type json --morphology conllu/no_bokmaal-ud-train.conllu json
+python3 -m spacy convert --file-type json --morphology conllu/no_bokmaal-ud-dev.conllu json
+python3 -m spacy convert --file-type json --morphology conllu/no_bokmaal-ud-test.conllu json
 
+python3 -m spacy convert --file-type json --morphology conllu/no_nynorsk-ud-train.conllu json
+python3 -m spacy convert --file-type json --morphology conllu/no_nynorsk-ud-dev.conllu json
+python3 -m spacy convert --file-type json --morphology conllu/no_nynorsk-ud-test.conllu json
+
+```
+
+# Train Norwegian Bokmål NER Model
+```bash
 # Train Model - with Norsk Aviskorpus/NoWaC  vectors
 python3 -m spacy train nb --version=0.0.1 --vectors=models/nb_vectors_nowac_md models/nb_ud_nowac_md  json/no_bokmaal-ud-train.json json/no_bokmaal-ud-dev.json
 ```
 
-# Train Norwegian Nynorsk Model (NER not availavble)
+# Train Norwegian Nynorsk Model
 ```bash
 # Download Nynorsk FastText vectors & create Spacy model
 wget -P fasttext https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.nn.300.vec.gz
 python3 -m spacy init-model nb models/nn_vectors_ft_lg --vectors-loc fasttext/cc.nn.300.vec.gz
-
-# Fix .conllu files - strip 'name=' from files: 'name=I-PER' -> 'I-PER'
-sed -i 's/SpaceAfter=No name=//g' norne/ud/nno/no_nynorsk-ud-dev.conllu
-sed -i 's/name=//g' norne/ud/nno/no_nynorsk-ud-dev.conllu
-sed -i 's/SpaceAfter=No name=//g' norne/ud/nno/no_nynorsk-ud-train.conllu
-sed -i 's/name=//g' norne/ud/nno/no_nynorsk-ud-train.conllu
 
 # Convert .conllu files to Spacy JSON format
 python3 -m spacy convert --file-type json --morphology norne/ud/nno/no_nynorsk-ud-train.conllu json
@@ -71,14 +75,8 @@ python3 -m spacy train nb --version=0.0.1 --vectors=models/nn_vectors_ft_lg mode
 # Train Mixed Bokmål/Nynorsk Norwegian NER Model
 ```bash
 # Merge Bokmål and Nynorsk conllu data
-cat norne/ud/nob/no_bokmaal-ud-train.conllu norne/ud/nno/no_nynorsk-ud-train.conllu norne/ud/nob/no_bokmaal-ud-test.conllu norne/ud/nno/no_nynorsk-ud-test.conllu > conllu/no-train.conllu 
-cat norne/ud/nob/no_bokmaal-ud-dev.conllu norne/ud/nno/no_nynorsk-ud-dev.conllu > conllu/no-dev.conllu 
-
-sed -i 's/SpaceAfter=No name=//g' conllu/no-dev.conllu 
-sed -i 's/name=//g' conllu/no-dev.conllu 
-sed -i 's/SpaceAfter=No name=//g' conllu/no-train.conllu
-sed -i 's/name=//g' conllu/no-train.conllu
-
+cat conllu/no_bokmaal-ud-train.conllu conllu/no_nynorsk-ud-train.conllu conllu/no_bokmaal-ud-test.conllu conllu/no_nynorsk-ud-test.conllu > conllu/no-train.conllu 
+cat conllu/no_bokmaal-ud-dev.conllu conllu/no_nynorsk-ud-dev.conllu > conllu/no-dev.conllu 
 
 # Convert conllu to Spacy JSON format
 python3 -m spacy convert --file-type json conllu/no-train.conllu json
@@ -100,12 +98,19 @@ python3 -m spacy train nb --version=0.0.1 --vectors=models/nb_vectors_nowac_md m
   }
 ```
 
+# Reducing model size
+You can reduce the number of word vectors to include in the model by setting the `--prune-vectors=N` flag for the `spacy init-model` [command](https://spacy.io/api/cli#init-model).
+
+
 # Creating packages from models
 
 ```bash
 python3 -m spacy package --create-meta models/no_ud_nowac_md/model-best packages --force
 cd packages/cd nb_model0-0.0.1/
 python3 setup.py sdist
+
+# Install package
+pip3 install package-name.tar.gz
 ```
 
 # See Also
