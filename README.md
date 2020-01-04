@@ -1,7 +1,8 @@
 # Training Norwegian models for Spacy
 
-__UPDATE:__ There is now an official Norwegian model for Spacy available.   
+__UPDATE:__ There is now an official Norwegian model for Spacy available.
 ```
+# Download Norwegian Spacy model
 python -m spacy download nb_core_news_sm
 ```
 
