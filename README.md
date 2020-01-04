@@ -1,12 +1,10 @@
 # Training Norwegian models for Spacy
 
-<p style="color:red">
-    __UPDATE:__ There is now an official Norwegian model for Spacy available. 
-    
-    ```
-    python -m spacy download nb_core_news_sm
-    ```
-</p>
+__UPDATE:__ There is now an official Norwegian model for Spacy available.   
+```
+python -m spacy download nb_core_news_sm
+```
+
 
 
 The method described below was tested on Ubuntu 18.04 with Spacy 2.1.4. On different systems or different versions of Spacy the steps might be slightly different.
